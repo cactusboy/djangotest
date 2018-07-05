@@ -1,0 +1,163 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="{% static 'style_table.css' %}" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="table-a" style="width:600px">
+        <div class="row-a">
+            <div class="line-a">
+                <div class="cell-a"><span class="cel">序号</span></div>
+                <div class="cell-b"><span class="cel">姓名</span></div>
+                <div class="cell-c"><span class="cel">金额</span></div>
+                <div class="cell-d"><span class="cel">来源单位</span></div>
+                <div class="cell-e"><span class="cel">铺位</span></div>
+            </div>
+            <div class="line-b">明细</div>
+        </div>
+        <div class="row-b">
+            <div class="line-a">
+                <div class="table-data" id="TABLE_DATA"></div>
+            </div>
+            <div class="line-b">
+                <div style="padding:8px">内容</div>
+            </div>
+        </div>
+        <div class="row-c">
+            <div class="line-c"><span class="cel" style="padding:3px;">合计<br />汇款金额</span></div>
+            <div class="line-d" id="PRICE_DATA"></div>
+        </div>
+        <div class="row-d">
+            <div class="line-c"><span class="cel" style="line-height:50px;">备注</span></div>
+            <div class="line-d">
+                <div style="padding:5px;">于是独立成团，如有不成团情况，提前7天告知，请收客时提前告知客人，谢谢配合！</div>
+            </div>
+        </div>
+        <div class="row-e">
+            请贵社务必于 月 日16:00之前将团款以汇款形式结清，并将汇款底单传真至我社， 具体行程以出团通知为准！逾期结款，视为自动退团，我社不予正常操作！恳请您在百忙之中予以合作，顺祝商祺！
+        </div>
+    </div>
+
+    搜索：<input type="text" oninput="search(this.value)" />
+    <div id="TOTAL_DATA">0人</div>
+
+    <script>
+        // 数据源
+        var tableData = [{
+            "姓名": "村长",
+            "金额": 300,
+            "来源单位": "斯维尔",
+            "铺位": "上铺"
+        }, {
+            "姓名": "李四",
+            "金额": 500,
+            "来源单位": "注册中心",
+            "铺位": "上铺"
+        }, {
+            "姓名": "王五",
+            "金额": 400,
+            "来源单位": "建设厅",
+            "铺位": "下铺"
+        }, {
+            "姓名": "张三",
+            "金额": 300,
+            "来源单位": "斯维尔",
+            "铺位": "上铺"
+        }, {
+            "姓名": "李四",
+            "金额": 500,
+            "来源单位": "注册中心",
+            "铺位": "上铺"
+        }, {
+            "姓名": "王五",
+            "金额": 400,
+            "来源单位": "建设厅",
+            "铺位": "下铺"
+        }, {
+            "姓名": "张三",
+            "金额": 300,
+            "来源单位": "斯维尔",
+            "铺位": "上铺"
+        }, {
+            "姓名": "李四",
+            "金额": 500,
+            "来源单位": "注册中心",
+            "铺位": "上铺"
+        }, {
+            "姓名": "王五",
+            "金额": 400,
+            "来源单位": "建设厅",
+            "铺位": "下铺"
+        }, {
+            "姓名": "张三",
+            "金额": 300,
+            "来源单位": "斯维尔",
+            "铺位": "上铺"
+        }, {
+            "姓名": "李四",
+            "金额": 500,
+            "来源单位": "注册中心",
+            "铺位": "上铺"
+        }, {
+            "姓名": "王五",
+            "金额": 400,
+            "来源单位": "建设厅",
+            "铺位": "下铺"
+        }, ]
+
+        // 搜索
+        var search = function(key) {
+
+            var empty = key.length == 0;
+            var arr = empty ? tableData : [];
+
+            // 筛选
+            if (!empty) {
+                for (var i = 0; i < tableData.length; i++) {
+                    var item = tableData[i];
+                    var f1 = item['姓名'].indexOf(key) >= 0;
+                    var f2 = item['金额'].toString().indexOf(key) >= 0;
+                    var f3 = item['来源单位'].indexOf(key) >= 0;
+                    var f4 = item['铺位'].indexOf(key) >= 0;
+
+                    if (f1 || f2 || f3 || f4) {
+                        arr.push(item);
+                    }
+                }
+            }
+
+            // 拼接HTML
+            var html = [];
+            var all = 0;
+            for (var i = 0; i < arr.length; i++) {
+                var item = arr[i];
+                all += parseFloat(item['金额']);
+
+                html.push('<div class="row">');
+                html.push('<div class="cell-a"><span class="cel">' + (i + 1) + '</span></div>');
+                html.push('<div class="cell-b"><span class="cel">' + item['姓名'] + '</span></div>');
+                html.push('<div class="cell-c"><span class="cel">' + item['金额'] + '</span></div>');
+                html.push('<div class="cell-d"><span class="cel">' + item['来源单位'] + '</span></div>');
+                html.push('<div class="cell-e"><span class="cel">' + item['铺位'] + '</span></div>');
+                html.push('</div>');
+            }
+
+            // 输出
+            var table = document.getElementById('TABLE_DATA');
+            table.innerHTML = html.join('');
+            table.style.width = '359px';
+
+            document.getElementById('PRICE_DATA').innerHTML = all.toFixed(2);
+            document.getElementById('TOTAL_DATA').innerHTML = arr.length + '人';
+        }
+
+        search('');
+    </script>
+</body>
+
+</html>
